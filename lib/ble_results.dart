@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:opentag_frontend/data/ble_service.dart';
 import 'package:opentag_frontend/one_device.dart';
 
 class BleResultsView extends StatelessWidget {
@@ -43,6 +45,33 @@ class BleResultsView extends StatelessWidget {
                 name: scanResult.advertisementData.localName,
                 deviceId: scanResult.device.remoteId.str,
               ),
+            StreamBuilder(
+              stream: FlutterBluePlus.isScanning,
+              builder: (context, snapshot) {
+                if (snapshot.hasError) return const SizedBox();
+                if (!snapshot.hasData) return const SizedBox();
+                if (!snapshot.data!) return const SizedBox();
+
+                return SizedBox(
+                  width: double.infinity,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12),
+                    child: CupertinoButton(
+                      color: Colors.grey.shade800,
+                      child: Text(
+                        "Suche beenden",
+                        style: TextStyle(
+                          color: Colors.orange.shade900,
+                        ),
+                      ),
+                      onPressed: () {
+                        BleService().stopScan();
+                      },
+                    ),
+                  ),
+                );
+              },
+            ),
           ],
         );
       },

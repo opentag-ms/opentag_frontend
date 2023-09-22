@@ -10,6 +10,7 @@ class YourPositionMarker extends StatefulWidget {
 class _YourPositionMarkerState extends State<YourPositionMarker> with SingleTickerProviderStateMixin {
   late AnimationController controller;
   late Animation animation;
+  late Animation sizeAnimation;
 
   @override
   void initState() {
@@ -23,7 +24,13 @@ class _YourPositionMarkerState extends State<YourPositionMarker> with SingleTick
     animation = ColorTween(begin: Colors.blue, end: Colors.transparent).animate(
       CurvedAnimation(
         parent: controller,
-        curve: Curves.bounceOut,
+        curve: Curves.easeInOut,
+      ),
+    );
+    sizeAnimation = Tween<double>(begin: 40, end: 60).animate(
+      CurvedAnimation(
+        parent: controller,
+        curve: Curves.easeInOut,
       ),
     );
 
@@ -47,19 +54,18 @@ class _YourPositionMarkerState extends State<YourPositionMarker> with SingleTick
     return Stack(
       alignment: Alignment.center,
       children: [
-        Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
+        const Text(
+          "Schlue...",
+          style: TextStyle(
+            fontSize: 20,
             color: Colors.blue,
-            borderRadius: BorderRadius.circular(90),
           ),
         ),
         Container(
-          width: 60,
-          height: 60,
+          width: sizeAnimation.value,
+          height: sizeAnimation.value,
           decoration: BoxDecoration(
-            color: animation.value,
+            color: Colors.blue,
             borderRadius: BorderRadius.circular(90),
             border: Border.all(
               color: animation.value,

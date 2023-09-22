@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:opentag_frontend/ble_results.dart';
+import 'package:opentag_frontend/data/ble_service.dart';
+import 'package:opentag_frontend/settings/settings.dart';
 
 class ContentView extends StatelessWidget {
   const ContentView({super.key});
@@ -11,13 +14,46 @@ class ContentView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            "Geräte",
-            style: TextStyle(
-              color: Colors.white70,
-              fontSize: 30,
-              fontWeight: FontWeight.bold,
-            ),
+          Row(
+            children: [
+              const Text(
+                "Geräte",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 30,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              StreamBuilder(
+                stream: FlutterBluePlus.isScanning,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) return const SizedBox();
+                  if (!snapshot.hasData) return const SizedBox();
+                  if (!snapshot.data!) return const SizedBox();
+
+                  return const Padding(
+                    padding: EdgeInsets.only(left: 8, top: 12),
+                    child: Text(
+                      "suche läuft...",
+                      style: TextStyle(
+                        color: Colors.lightGreen,
+                      ),
+                    ),
+                  );
+                },
+              ),
+              const Spacer(),
+              IconButton(
+                icon: const Icon(
+                  Icons.replay_outlined,
+                  color: Colors.white70,
+                  size: 26,
+                ),
+                onPressed: () {
+                  BleService().scan();
+                },
+              ),
+            ],
           ),
           const BleResultsView(),
           const Divider(),
@@ -119,6 +155,7 @@ class ContentView extends StatelessWidget {
               ),
             ),
           ),
+          const SettingsView(),
           const SizedBox(height: 600),
         ],
       ),

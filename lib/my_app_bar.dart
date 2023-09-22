@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:opentag_frontend/ble_service.dart';
+import 'package:flutter_blue_plus/flutter_blue_plus.dart';
+import 'package:opentag_frontend/data/ble_service.dart';
 
 class MyAppBar extends StatelessWidget {
   final Widget child;
@@ -43,23 +44,16 @@ class MyAppBar extends StatelessWidget {
                   color: Colors.white70,
                 ),
               ),
-              IconButton(
-                onPressed: () {
-                  BleService().scan();
+              StreamBuilder(
+                stream: FlutterBluePlus.adapterState,
+                builder: (context, snapshot) {
+                  if (snapshot.hasError) return const SizedBox();
+                  if (!snapshot.hasData) return const SizedBox();
+
+                  snapshot.data!.name;
+
+                  return Text(snapshot.data!.name);
                 },
-                icon: const Icon(
-                  Icons.wifi_find_rounded,
-                  color: Colors.white70,
-                ),
-              ),
-              IconButton(
-                onPressed: () {
-                  BleService().stopScan();
-                },
-                icon: const Icon(
-                  Icons.wifi_off_rounded,
-                  color: Colors.white70,
-                ),
               ),
             ],
           ),
