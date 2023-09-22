@@ -12,11 +12,22 @@ class NewMap extends StatefulWidget {
 }
 
 class _NewMapState extends State<NewMap> {
+  MapController mapController = MapController();
+
+  @override
+  void dispose() {
+    super.dispose();
+
+    mapController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return FlutterMap(
+      mapController: mapController,
       options: MapOptions(
         zoom: 17,
+        maxZoom: 20,
       ),
       children: [
         TileLayer(

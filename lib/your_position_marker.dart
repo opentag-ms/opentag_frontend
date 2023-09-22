@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:opentag_frontend/device_info.dart';
 
 class YourPositionMarker extends StatefulWidget {
   const YourPositionMarker({super.key});
@@ -51,29 +52,21 @@ class _YourPositionMarkerState extends State<YourPositionMarker> with SingleTick
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        const Text(
-          "Schlue...",
-          style: TextStyle(
-            fontSize: 20,
-            color: Colors.blue,
+    return GestureDetector(
+      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const DeviceInfoView())),
+      behavior: HitTestBehavior.translucent,
+      child: Container(
+        width: sizeAnimation.value,
+        height: sizeAnimation.value,
+        decoration: BoxDecoration(
+          color: Colors.blue,
+          borderRadius: BorderRadius.circular(90),
+          border: Border.all(
+            color: animation.value,
+            width: 5,
           ),
         ),
-        Container(
-          width: sizeAnimation.value,
-          height: sizeAnimation.value,
-          decoration: BoxDecoration(
-            color: Colors.blue,
-            borderRadius: BorderRadius.circular(90),
-            border: Border.all(
-              color: animation.value,
-              width: 5,
-            ),
-          ),
-        ),
-      ],
+      ),
     );
   }
 }

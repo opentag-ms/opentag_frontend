@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:opentag_frontend/ble_results.dart';
 import 'package:opentag_frontend/data/ble_service.dart';
+import 'package:opentag_frontend/device_info.dart';
 import 'package:opentag_frontend/settings/settings.dart';
 
 class ContentView extends StatelessWidget {
@@ -89,7 +90,7 @@ class ContentView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(right: 20),
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const DeviceInfoView())),
                         child: Column(
                           children: [
                             Container(
