@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:opentag_frontend/ble_results.dart';
 import 'package:opentag_frontend/data/ble_service.dart';
-import 'package:opentag_frontend/device_info.dart';
+import 'package:opentag_frontend/scan_qr.dart';
 import 'package:opentag_frontend/settings/settings.dart';
 
 class ContentView extends StatelessWidget {
@@ -15,6 +15,20 @@ class ContentView extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 20),
+                width: 50,
+                height: 10,
+                decoration: const BoxDecoration(
+                  color: Colors.white60,
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                ),
+              ),
+            ],
+          ),
           Row(
             children: [
               const Text(
@@ -90,7 +104,7 @@ class ContentView extends StatelessWidget {
                     Padding(
                       padding: const EdgeInsets.only(right: 20),
                       child: GestureDetector(
-                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const DeviceInfoView())),
+                        onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const QRScanner())),
                         child: Column(
                           children: [
                             Container(
@@ -101,7 +115,7 @@ class ContentView extends StatelessWidget {
                                 color: Colors.grey.shade800,
                               ),
                               child: const Icon(
-                                Icons.privacy_tip_rounded,
+                                Icons.add,
                                 size: 40,
                                 color: Colors.white70,
                               ),
@@ -109,39 +123,7 @@ class ContentView extends StatelessWidget {
                             const Padding(
                               padding: EdgeInsets.only(top: 6),
                               child: Text(
-                                "Schutz",
-                                style: TextStyle(
-                                  color: Colors.white70,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(right: 20),
-                      child: GestureDetector(
-                        onTap: () {},
-                        child: Column(
-                          children: [
-                            Container(
-                              height: 100,
-                              width: 100,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                color: Colors.grey.shade800,
-                              ),
-                              child: const Icon(
-                                Icons.list_rounded,
-                                size: 40,
-                                color: Colors.white70,
-                              ),
-                            ),
-                            const Padding(
-                              padding: EdgeInsets.only(top: 6),
-                              child: Text(
-                                "Deine Geräte",
+                                "Tag hinzufügen",
                                 style: TextStyle(
                                   color: Colors.white70,
                                 ),

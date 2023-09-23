@@ -31,46 +31,38 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_blue_plus: ^1.15.8
-  flutter_osm_plugin: ^0.60.4
   shared_preferences: ^2.2.1
-  
   
   #####
   wtf_sliding_sheet: ^1.1.0
-  
   cupertino_icons: ^1.0.2
   flutter_map: ^5.0.0
   latlong2: ^0.9.0
   flutter_map_location_marker: ^7.0.5
 
+  #Networking Tool
+  qr_flutter: ^4.0.0 #Creator
+  mobile_scanner: ^2.0.0 #Scanner
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
-
-  
-  
-  
-  
-  
+  flutter_launcher_icons: ^0.13.1
   flutter_lints: ^2.0.0
 
-
-
-
-
 flutter:
-
-  
-  
-  
   uses-material-design: true
 
-  
-  
-  
-  
-
-  
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon/icon.png"
+  min_sdk_android: 21 # android min sdk min:16, default 21
+  web:
+    generate: true
+    image_path: "assets/icon/icon.png"
+    background_color: "#hexcode"
+    theme_color: "#hexcode"
   
 
   

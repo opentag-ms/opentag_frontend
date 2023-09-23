@@ -2,6 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_blue_plus/flutter_blue_plus.dart';
 import 'package:opentag_frontend/data/ble_service.dart';
+import 'package:opentag_frontend/data/settings_service.dart';
+import 'package:opentag_frontend/known_tags_overview.dart';
 import 'package:opentag_frontend/one_device.dart';
 
 class BleResultsView extends StatelessWidget {
@@ -13,10 +15,32 @@ class BleResultsView extends StatelessWidget {
       stream: FlutterBluePlus.scanResults,
       builder: (context, snapshot) {
         if (!snapshot.hasData) {
-          return const Text("No data");
+          return const Column(
+            children: [
+              KnownTagsOverview(scanResults: []),
+              /*Text(
+                "Keine Daten",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 16,
+                ),
+              ),*/
+            ],
+          );
         }
         if (snapshot.hasError) {
-          return const Text("Error");
+          return const Column(
+            children: [
+              KnownTagsOverview(scanResults: []),
+              Text(
+                "Fehler bei der BLE Suche",
+                style: TextStyle(
+                  color: Colors.white70,
+                  fontSize: 16,
+                ),
+              ),
+            ],
+          );
         }
 
         List<ScanResult> results = snapshot.data ?? [];
@@ -39,12 +63,15 @@ class BleResultsView extends StatelessWidget {
 
         return Column(
           children: [
+            KnownTagsOverview(scanResults: resultsCleaned),
             if (resultsCleaned.isEmpty) const Text("Keine Geräte"),
             for (ScanResult scanResult in resultsCleaned)
-              OneDevice(
-                name: scanResult.advertisementData.localName,
-                deviceId: scanResult.device.remoteId.str,
-              ),
+              if (!SettingsService().ownedTags.contains(scanResult.device.remoteId.str))
+                OneDevice(
+                  name: scanResult.advertisementData.localName,
+                  deviceId: scanResult.device.remoteId.str,
+                  inRange: true,
+                ),
             StreamBuilder(
               stream: FlutterBluePlus.isScanning,
               builder: (context, snapshot) {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:opentag_frontend/device_info.dart';
 
 class YourPositionMarker extends StatefulWidget {
   const YourPositionMarker({super.key});
@@ -19,10 +18,10 @@ class _YourPositionMarkerState extends State<YourPositionMarker> with SingleTick
 
     controller = AnimationController(
       vsync: this,
-      duration: const Duration(seconds: 1),
+      duration: const Duration(seconds: 3),
     );
 
-    animation = ColorTween(begin: Colors.blue, end: Colors.transparent).animate(
+    animation = ColorTween(begin: Colors.white, end: Colors.blue).animate(
       CurvedAnimation(
         parent: controller,
         curve: Curves.easeInOut,
@@ -52,18 +51,24 @@ class _YourPositionMarkerState extends State<YourPositionMarker> with SingleTick
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => Navigator.push(context, MaterialPageRoute(builder: (context) => const DeviceInfoView())),
-      behavior: HitTestBehavior.translucent,
-      child: Container(
-        width: sizeAnimation.value,
-        height: sizeAnimation.value,
-        decoration: BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.circular(90),
-          border: Border.all(
-            color: animation.value,
-            width: 5,
+    //debugPrint(sizeAnimation.value.toString());
+
+    return Center(
+      child: GestureDetector(
+        onTap: () {
+          debugPrint("Tapped on position!");
+        },
+        //behavior: HitTestBehavior.translucent,
+        child: Container(
+          width: sizeAnimation.value,
+          height: sizeAnimation.value,
+          decoration: BoxDecoration(
+            color: Colors.blue,
+            borderRadius: BorderRadius.circular(90),
+            border: Border.all(
+              color: animation.value,
+              width: 10,
+            ),
           ),
         ),
       ),

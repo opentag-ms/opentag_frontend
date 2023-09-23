@@ -2,11 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:opentag_frontend/app.dart';
+import 'package:opentag_frontend/data/server_service.dart';
+import 'package:opentag_frontend/data/settings_service.dart';
 import 'package:opentag_frontend/one_device.dart';
+import 'package:opentag_frontend/share_deice.dart';
 import 'package:opentag_frontend/your_position_marker.dart';
 
 class DeviceInfoView extends StatefulWidget {
-  const DeviceInfoView({super.key});
+  final String name;
+  final String deviceId;
+
+  const DeviceInfoView({
+    super.key,
+    required this.name,
+    required this.deviceId,
+  });
 
   @override
   State<DeviceInfoView> createState() => _DeviceInfoViewState();
@@ -29,6 +40,7 @@ class _DeviceInfoViewState extends State<DeviceInfoView> {
       appBar: AppBar(
         backgroundColor: Colors.grey.shade900,
         foregroundColor: Colors.white70,
+        title: Text(widget.name),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -52,8 +64,8 @@ class _DeviceInfoViewState extends State<DeviceInfoView> {
                     markers: [
                       Marker(
                         point: const LatLng(51.951475, 7.638143),
-                        width: 50,
-                        height: 50,
+                        width: 100,
+                        height: 100,
                         builder: (context) => const YourPositionMarker(),
                       ),
                     ],
@@ -74,19 +86,134 @@ class _DeviceInfoViewState extends State<DeviceInfoView> {
                 ),
               ),
             ),
-            const OneDevice(
-              name: "name",
-              deviceId: "deviceId",
+            OneDevice(
+              name: widget.name,
+              deviceId: widget.deviceId,
             ),
-            Theme(
-              data: ThemeData(textTheme: const TextTheme()),
-              child: const Column(
-                children: [
-                  ListTile(
-                    leading: Text("In Reichweite"),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 20, horizontal: 12),
+              child: Divider(),
+            ),
+            Row(
+              children: [
+                //################################## Hinzufuegen
+                if (!SettingsService().ownedTags.contains(widget.deviceId))
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20, left: 12),
+                    child: GestureDetector(
+                      onTap: () async {
+                        await ServerService().registerDevice(widget.deviceId, widget.name);
+
+                        // ignore: use_build_context_synchronously
+                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const App()), (route) => false);
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.green.shade700,
+                            ),
+                            child: const Icon(
+                              Icons.add,
+                              size: 40,
+                              color: Colors.white70,
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 6),
+                            child: Text(
+                              "Hinzufügen",
+                              style: TextStyle(
+                                color: Colors.white70,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ],
-              ),
+                //#################################### Entfernen
+                if (SettingsService().ownedTags.contains(widget.deviceId))
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20, left: 12),
+                    child: GestureDetector(
+                      onTap: () async {
+                        await ServerService().unregisterDevice(widget.deviceId);
+                        // ignore: use_build_context_synchronously
+                        Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context) => const App()), (route) => false);
+                      },
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.red.shade700,
+                            ),
+                            child: const Icon(
+                              Icons.delete,
+                              size: 40,
+                              color: Colors.white70,
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 6),
+                            child: Text(
+                              "Entfernen",
+                              style: TextStyle(
+                                color: Colors.white70,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                //######################################### Teilen
+                if (SettingsService().ownedTags.contains(widget.deviceId))
+                  Padding(
+                    padding: const EdgeInsets.only(right: 20, left: 12),
+                    child: GestureDetector(
+                      onTap: () => Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => ShareDevice(
+                                    deviceId: widget.deviceId,
+                                    name: widget.name,
+                                  ))),
+                      child: Column(
+                        children: [
+                          Container(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.blue,
+                            ),
+                            child: const Icon(
+                              Icons.share,
+                              size: 40,
+                              color: Colors.white70,
+                            ),
+                          ),
+                          const Padding(
+                            padding: EdgeInsets.only(top: 6),
+                            child: Text(
+                              "Teilen",
+                              style: TextStyle(
+                                color: Colors.white70,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
             ),
           ],
         ),

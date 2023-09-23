@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:opentag_frontend/data/settings_service.dart';
+import 'package:opentag_frontend/data/tag.dart';
 import 'package:opentag_frontend/your_position_marker.dart';
 
 class NewMap extends StatefulWidget {
@@ -36,17 +37,13 @@ class _NewMapState extends State<NewMap> {
         ),
         MarkerLayer(
           markers: [
-            Marker(
-              point: const LatLng(51.951475, 7.638143),
-              width: 50,
-              height: 50,
-              /*builder: (context) => const Icon(
-                Icons.local_offer_rounded,
-                color: Colors.teal,
-                size: 50,
-              ),*/
-              builder: (context) => const YourPositionMarker(),
-            ),
+            for (Tag tag in SettingsService().tags)
+              Marker(
+                point: tag.latLng,
+                width: 50,
+                height: 50,
+                builder: (context) => const YourPositionMarker(),
+              ),
           ],
         ),
         CurrentLocationLayer(

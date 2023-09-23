@@ -58,7 +58,7 @@ class BleService {
     await FlutterBluePlus.startScan(
       androidUsesFineLocation: true,
       removeIfGone: const Duration(
-        seconds: 20,
+        seconds: 6,
       ),
     );
   }

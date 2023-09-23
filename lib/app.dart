@@ -13,6 +13,7 @@ class App extends StatelessWidget {
       body: SlidingSheet(
         elevation: 8,
         cornerRadius: 16,
+        
         snapSpec: const SnapSpec(
           // Enable snapping. This is true by default.
           snap: true,
@@ -28,17 +29,6 @@ class App extends StatelessWidget {
           child: NewMap(),
         ),
         color: Colors.grey.shade900,
-        headerBuilder: (context, state) {
-          return Container(
-            margin: const EdgeInsets.symmetric(vertical: 20),
-            width: 50,
-            height: 10,
-            decoration: const BoxDecoration(
-              color: Colors.white60,
-              borderRadius: BorderRadius.all(Radius.circular(10)),
-            ),
-          );
-        },
         builder: (context, state) {
           // This is the content of the sheet that will get
           // scrolled, if the content is bigger than the available
